@@ -1,11 +1,12 @@
-<?php $title = 'Billet simple pour l\'Alaska - Episode'; ?>
+<?php $title = 'Billet simple pour l\'Alaska'; ?>
 
 <?php include("intro.php"); ?>
 
 <?php ob_start(); ?>
 
+
     <section>
-        <a class="back_button" href="index.php">< Retour</a>
+        <a class="back_button" href="/index.php">< Retour</a>
 
         <div class="post">
             <div class="post_date">le <?= $postWithComment->getPost()['creation_date_fr'] ?></div>
@@ -18,7 +19,7 @@
     <section>
         <div class="comment_post">
             <h2>Commentaires</h2>
-            <form action="index.php?action=addComment&amp;id=<?= $postWithComment->getPost()['id'] ?>" method="post">
+            <form action="/index.php?action=addComment&amp;id=<?= $postWithComment->getPost()['id'] ?>" method="post">
                 <div class="comment_field">
                     <label for="author">Pseudo</label><br />
                     <input class="input_comment" type="text" id="author" name="author" />
@@ -42,7 +43,7 @@
                 <p id="comment_date">le <?= $comment['comment_date_fr'] ?></p>
                 <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
                 <div class="align_button">
-                    <input class="alert_button" type="submit" value="Signaler" />
+                    <a href="/index.php?action=flagComment&amp;id=<?= $comment['id'] ?>">Signaler</a>
                 </div>
                 <hr>
                 </div>

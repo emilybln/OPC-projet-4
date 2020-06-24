@@ -1,8 +1,13 @@
-<?php $title = 'Billet simple pour l\'Alaska'; ?>
+<?php $title = 'Episode'; ?>
 
 <?php include("intro.php"); ?>
 
 <?php ob_start(); ?>
+
+    <section class="intro">
+        <h1>Billet simple pour l'Alaska</h1>
+        <p>par Jean Forteroche</p>
+    </section>
 
 <?php
 while ($data = $posts->fetch())
@@ -15,7 +20,7 @@ while ($data = $posts->fetch())
             <p>
                 <?= nl2br(htmlspecialchars($data['content'])) ?>
                 <hr>
-                <div class="comment_link"><a href="index.php?action=post&amp;id=<?= $data['id'] ?>">Voir les commentaires</a></div>
+                <div class="comment_link"><a href="/index.php?action=post&amp;id=<?= $data['id'] ?>">Voir les commentaires</a></div>
             </p>
 
         </div>
