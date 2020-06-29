@@ -83,7 +83,11 @@ class FrontendCtrl {
         return $postEdition;
     }
 
-
+    public function getLogin()
+    {
+        $getLogin = new LoginManager();
+        return $getLogin->getLogin($_POST['login']);
+    }
 
 }
 

@@ -4,8 +4,7 @@ class PostManager
     public function getPosts()
     {
         $db = $this->dbConnect();
-        $req = $db->query('SELECT id, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM posts ORDER BY creation_date DESC');
-        return $req;
+        return $db->query('SELECT id, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM posts ORDER BY creation_date DESC');
     }
 
     public function getPost($postId)
@@ -13,8 +12,7 @@ class PostManager
         $db = $this->dbConnect();
         $req = $db->prepare('SELECT id, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM posts WHERE id = ?');
         $req->execute(array($postId));
-        $post = $req->fetch();
-        return $post;
+        return $req->fetch();
     }
 
     public function addPost($content)
@@ -46,7 +44,6 @@ class PostManager
 
     private function dbConnect()
     {
-        $db = new PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'root', 'root');
-        return $db;
+        return new PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'root', 'root');
     }
 }

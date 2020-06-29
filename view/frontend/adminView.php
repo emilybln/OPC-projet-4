@@ -14,16 +14,18 @@
     <script>
         tinymce.init({
             selector: '#mytextarea'
-        });
+            });
     </script>
-
 </head>
 
 
 <body>
 
+<?php include("intro.php"); ?>
+
     <section>
-        <h1>Bienvenue!</h1>
+            <h1>Bienvenue <?php echo $_SESSION['login'] ?></h1>
+
         <a class="back_button" href="/index.php">< Retour à la page d'accueil</a>
     </section>
 
@@ -81,11 +83,11 @@
             <div class="post_date">le <?= $data['creation_date_fr'] ?></div>
 
             <p>
-                <?= nl2br(htmlspecialchars($data['content'])) ?>
+                <?= nl2br(htmlspecialchars_decode($data['content'])) ?>
                 <hr>
-                <div>
-                    <div class="alert_button"><a href="/index.php?action=getPostEdition&amp;id=<?= $data['id'] ?>">Modifier</a></div>
-                    <div class="alert_button"><a href="/index.php?action=deletePost&amp;id=<?= $data['id'] ?>">Supprimer</a></div>
+                <div class="align_button">
+                    <a href="/index.php?action=getPostEdition&amp;id=<?= $data['id'] ?>">Modifier</a>
+                    <a href="/index.php?action=deletePost&amp;id=<?= $data['id'] ?>">Supprimer</a>
                 </div>
             </p>
 

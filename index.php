@@ -6,7 +6,6 @@ try {
     $frontendCtr = new FrontendCtrl();
     $posts = $frontendCtr->listPosts();
 
-
     if (isset($_GET['action'])) {
         if  ($_GET['action'] == 'post') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
@@ -23,12 +22,10 @@ try {
                     $frontendCtr->addComment($_GET['id'], $_POST['author'], $_POST['comment']);
                 }
                 else {
-                    // Autre exception
                     throw new Exception('Tous les champs ne sont pas remplis !');
                 }
             }
             else {
-                // Autre exception
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
@@ -43,7 +40,6 @@ try {
                 }
             }
             else {
-                // Autre exception
                 throw new Exception('Aucun contenu trouvé');
             }
         }
@@ -104,25 +100,55 @@ try {
                 throw new Exception('Aucun identifiant de commentaire trouvé');
             }
         }
+
+        elseif ($_GET['action'] == 'logout') {
+            if (isset($_SESSION['id'])) {
+                echo 'test';
+                session_destroy();
+                return require('view/frontend/listPostsView.php');
+            }
+            else {
+                throw new Exception('Aucun identifiant de commentaire trouvé');
+            }
+        }
+
+        elseif ($_GET['action'] == 'goAdmin') {
+            if (isset($_SESSION['login'])) {
+                session_start();
+                return require('view/frontend/adminView.php');
+            }
+            else {
+                throw new Exception('Aucun identifiant de commentaire trouvé');
+            }
+        }
     }
 
 
     if (isset($_POST['login']) AND isset($_POST['password'])) {
-        if ($_POST['password'] == "123") {
-           // $posts = $frontendCtr->listPosts();
-            return require('view/frontend/adminView.php');
+        $getLogin = $frontendCtr->getLogin();
+
+        if (!$getLogin) {
+            echo 'L\'identifiant ou le mot de passe ne correspond pas';
         }
         else {
-            return require('view/frontend/errorLogin.php');
+            $isPasswordCorrect = password_verify($_POST['password'], $getLogin['password']);
+            if ($isPasswordCorrect) {
+
+                $_SESSION['id'] = $getLogin['id'];
+                $_SESSION['login'] = $getLogin['login'];
+                return require('view/frontend/adminView.php');
+            }
+            else {
+                echo 'L\'identifiant ou le mot de passe ne correspond pas';
+            }
         }
     }
 
     else {
-        //$posts = $frontendCtr->listPosts();
         return require('view/frontend/listPostsView.php');
     }
 
 }
-catch(Exception $e) { // S'il y a eu une erreur, alors...
+catch(Exception $e) {
     echo 'Erreur : ' . $e->getMessage();
 }

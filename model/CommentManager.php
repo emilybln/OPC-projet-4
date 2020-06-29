@@ -49,14 +49,11 @@ class CommentManager
     public function getFlagComments()
     {
         $db = $this->dbConnect();
-        $req = $db->query('SELECT id, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr, flag FROM comments WHERE flag = 1 ORDER BY comment_date DESC');
-
-        return $req;
+        return $db->query('SELECT id, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr, flag FROM comments WHERE flag = 1 ORDER BY comment_date DESC');
     }
 
     private function dbConnect()
     {
-        $db = new PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'root', 'root');
-        return $db;
+        return new PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'root', 'root');
     }
 }
