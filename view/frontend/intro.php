@@ -1,9 +1,13 @@
 <section class="section_intro">
     <div>
-    <p class="p_form">Espace membre</p>
         <?php
-        if (isset($_SESSION['login'])) {
-        ?>
+
+        var_dump($_SESSION['login']);
+        if (isset($_SESSION['login']) && !is_null($_SESSION['login'])) {
+            ?>
+            <form action="/index.php?action=goAdmin" method="get">
+                <input type="submit" value="Espace membre" class="back_button"/>
+            </form>
             <form action="/index.php?action=logout" method="get">
                 <input type="submit" value="Déconnexion" class="button_form"/>
             </form>

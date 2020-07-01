@@ -18,10 +18,11 @@ while ($data = $posts->fetch())
             <div class="post_date">le <?= $data['creation_date_fr'] ?></div>
 
             <p>
-                <?= nl2br(htmlspecialchars($data['content'])) ?>
-                <hr>
-                <div class="comment_link"><a href="/index.php?action=post&amp;id=<?= $data['id'] ?>">Voir les commentaires</a></div>
-            </p>
+                <?= nl2br(htmlspecialchars_decode($data['content'])) ?>
+               </p>
+            <hr>
+            <div class="comment_link"><a href="/index.php?action=post&amp;id=<?= $data['id'] ?>">Voir les commentaires</a></div>
+
 
         </div>
     </section>

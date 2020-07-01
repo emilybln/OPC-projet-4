@@ -11,7 +11,7 @@
         <div class="post">
             <div class="post_date">le <?= $postWithComment->getPost()['creation_date_fr'] ?></div>
             <p>
-                <?= nl2br(htmlspecialchars($postWithComment->getPost()['content'])) ?>
+                <?= nl2br(htmlspecialchars_decode($postWithComment->getPost()['content'])) ?>
             </p>
         </div>
     </section>

@@ -1,6 +1,6 @@
 <?php
 require('autoload.php');
-
+session_start();
 
 try {
     $frontendCtr = new FrontendCtrl();
@@ -59,7 +59,7 @@ try {
                 return require('view/frontend/successView.php');
             }
             else {
-                throw new Exception('Impossible de modifier le post');
+                throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
 
@@ -68,7 +68,7 @@ try {
                 $frontendCtr->flagComment($_GET['id']);
             }
             else {
-                throw new Exception('le commentaire n\'a pas pu être signalé');
+                throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
 
@@ -77,17 +77,17 @@ try {
                 $frontendCtr->unflagComment($_GET['id']);
             }
             else {
-                throw new Exception('le commentaire n\'a pas pu être approuvé');
+                throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
 
         elseif ($_GET['action'] == 'deleteComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $frontendCtr->deleteComment($_GET['id']);
-                return require('view/frontend/adminView.php');
+                return require('view/frontend/deleteCommentView.php');
             }
             else {
-                throw new Exception('Aucun identifiant de commentaire trouvé');
+                throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
 
@@ -97,28 +97,28 @@ try {
                 return require('view/frontend/editionView.php');
             }
             else {
-                throw new Exception('Aucun identifiant de commentaire trouvé');
+                throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
 
         elseif ($_GET['action'] == 'logout') {
-            if (isset($_SESSION['id'])) {
-                echo 'test';
-                session_destroy();
+            if (isset($_SESSION['login'])) {
+                unset($_SESSION["id"]);
+                unset($_SESSION["login"]);
+                unset($_SESSION["password"]);
                 return require('view/frontend/listPostsView.php');
             }
             else {
-                throw new Exception('Aucun identifiant de commentaire trouvé');
+                throw new Exception('Aucun identifiant de session trouvé');
             }
         }
 
         elseif ($_GET['action'] == 'goAdmin') {
             if (isset($_SESSION['login'])) {
-                session_start();
                 return require('view/frontend/adminView.php');
             }
             else {
-                throw new Exception('Aucun identifiant de commentaire trouvé');
+                throw new Exception('Aucune session trouvée');
             }
         }
     }
@@ -133,7 +133,6 @@ try {
         else {
             $isPasswordCorrect = password_verify($_POST['password'], $getLogin['password']);
             if ($isPasswordCorrect) {
-
                 $_SESSION['id'] = $getLogin['id'];
                 $_SESSION['login'] = $getLogin['login'];
                 return require('view/frontend/adminView.php');

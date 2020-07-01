@@ -84,12 +84,12 @@
 
             <p>
                 <?= nl2br(htmlspecialchars_decode($data['content'])) ?>
-                <hr>
-                <div class="align_button">
-                    <a href="/index.php?action=getPostEdition&amp;id=<?= $data['id'] ?>">Modifier</a>
-                    <a href="/index.php?action=deletePost&amp;id=<?= $data['id'] ?>">Supprimer</a>
-                </div>
             </p>
+            <hr>
+            <div class="align_button">
+                <a href="/index.php?action=getPostEdition&amp;id=<?= $data['id'] ?>">Modifier</a>
+                <a href="/index.php?action=deletePost&amp;id=<?= $data['id'] ?>">Supprimer</a>
+            </div>
 
         </div>
     </section>
