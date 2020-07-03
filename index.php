@@ -16,35 +16,9 @@ try {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
-        elseif ($_GET['action'] == 'addComment') {
-            if (isset($_GET['id']) && $_GET['id'] > 0) {
-                if (!empty($_POST['author']) && !empty($_POST['comment'])) {
-                    $frontendCtr->addComment($_GET['id'], $_POST['author'], $_POST['comment']);
-                }
-                else {
-                    throw new Exception('Tous les champs ne sont pas remplis !');
-                }
-            }
-            else {
-                throw new Exception('Aucun identifiant de billet envoyé');
-            }
-        }
-        elseif ($_GET['action'] == 'addPost') {
-            if (isset($_POST['content']) AND !empty($_POST['content'])) {
-                try {
-                    $frontendCtr->addPost($_POST['content']);
-                    return require('view/frontend/successView.php');
-                }
-                catch(Exception $e) {
-                    throw new Exception('Aucun contenu trouvé');
-                }
-            }
-            else {
-                throw new Exception('Aucun contenu trouvé');
-            }
-        }
+
         elseif ($_GET['action'] == 'deletePost') {
-            if (isset($_GET['id']) && $_GET['id'] > 0) {
+            if (isset($_GET['id']) && $_GET['id'] > 0 && !is_null($_SESSION['login']) ) {
                 $frontendCtr->deletePost($_GET['id']);
                 return require('view/frontend/deleteView.php');
             }
@@ -53,15 +27,6 @@ try {
             }
         }
 
-        elseif ($_GET['action'] == 'editPost') {
-            if (isset($_GET['id']) && $_GET['id'] > 0) {
-                $frontendCtr->editPost($_GET['id'], $_POST['content']);
-                return require('view/frontend/successView.php');
-            }
-            else {
-                throw new Exception('Aucun identifiant de billet envoyé');
-            }
-        }
 
         elseif ($_GET['action'] == 'flagComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
@@ -109,7 +74,8 @@ try {
                 return require('view/frontend/listPostsView.php');
             }
             else {
-                throw new Exception('Aucun identifiant de session trouvé');
+                $phrase = "Désolé, nous n'avons trouvé aucune session administrateur en cours.";
+                return require('view/frontend/errorLogin.php');
             }
         }
 
@@ -118,8 +84,48 @@ try {
                 return require('view/frontend/adminView.php');
             }
             else {
-                throw new Exception('Aucune session trouvée');
+                $phrase = "Désolé, nous n'avons trouvé aucune session administrateur en cours.";
+                return require('view/frontend/errorLogin.php');
             }
+        }
+    }
+
+    if(isset($_POST['addComment'])){
+        if (isset($_POST['id']) && $_POST['id'] > 0) {
+            if (!empty($_POST['author']) && !empty($_POST['comment'])) {
+                $frontendCtr->addComment($_POST['id'], $_POST['author'], $_POST['comment']);
+            }
+            else {
+                throw new Exception('Tous les champs ne sont pas remplis !');
+            }
+        }
+        else {
+            throw new Exception('Aucun identifiant de billet envoyé');
+        }
+    }
+
+    if(isset($_POST['editPost'])){
+        if (isset($_POST['id']) && $_POST['id'] > 0) {
+            $frontendCtr->editPost($_POST['id'], $_POST['content']);
+            return require('view/frontend/successView.php');
+        }
+        else {
+            throw new Exception('Aucun identifiant de billet envoyé');
+        }
+    }
+
+    if(isset($_POST['addPost'])){
+        if (isset($_POST['content']) AND !empty($_POST['content'])) {
+            try {
+                $frontendCtr->addPost($_POST['content']);
+                return require('view/frontend/successView.php');
+            }
+            catch(Exception $e) {
+                throw new Exception('Aucun contenu trouvé');
+            }
+        }
+        else {
+            throw new Exception('Aucun contenu trouvé');
         }
     }
 
@@ -128,7 +134,8 @@ try {
         $getLogin = $frontendCtr->getLogin();
 
         if (!$getLogin) {
-            echo 'L\'identifiant ou le mot de passe ne correspond pas';
+            $phrase = "L'identifiant et le mot de passe que vous avez renseignés sont incorrects, veuillez réessayer.";
+            return require('view/frontend/errorLogin.php');
         }
         else {
             $isPasswordCorrect = password_verify($_POST['password'], $getLogin['password']);
@@ -138,7 +145,8 @@ try {
                 return require('view/frontend/adminView.php');
             }
             else {
-                echo 'L\'identifiant ou le mot de passe ne correspond pas';
+                $phrase = "L'identifiant et le mot de passe que vous avez renseignés sont incorrects, veuillez réessayer.";
+                return require('view/frontend/errorLogin.php');
             }
         }
     }

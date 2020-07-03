@@ -5,14 +5,14 @@ body {
 }
 
 h1 {
-    font-family: 'Staatliches', cursive, arial, sans-serif;
+    font-family: 'Staatliches', arial, sans-serif;
     font-size: 64px;
     color: #20232A;
     margin-bottom: 20px;
 }
 
 h2 {
-    font-family: 'Staatliches', cursive, arial, sans-serif;
+    font-family: 'Staatliches', arial, sans-serif;
     font-size: 34px;
     color: #20232A;
     margin-bottom: 20px;
@@ -22,7 +22,7 @@ h3 {
     color: #20232A;
     font-size: 22px;
     margin-bottom: 10px;
-    font-family: 'Staatliches', cursive, arial, sans-serif;
+    font-family: 'Staatliches', arial, sans-serif;
 }
 
 section {
@@ -97,6 +97,7 @@ section {
 .form {
     display: flex;
     flex-direction: row;
+    align-items: baseline;
 }
 
 .input_member {
@@ -120,7 +121,7 @@ section {
     border: 1px solid #20232A;
     font-size: 12px;
     margin-right: 0;
-    height: 24px;
+    min-height: 34px;
 }
 
 .button_form:hover {
@@ -195,8 +196,6 @@ hr {
     background: none;
 }
 
-
-
 /* ----------------- COMMENTS -----------------  */
 
 .comment_post {
@@ -248,7 +247,7 @@ hr {
     justify-content: flex-end;
 }
 
-.comment_button input {
+.comment_button button {
     background-color: #ED5464;
     color: #ffffff;
     border-radius: 4px;
@@ -318,7 +317,7 @@ h4 {
     font-weight: 800;
     color: #20232A;
     margin-bottom: 20px;
-    font-family: 'Staatliches', cursive, arial, sans-serif;
+    font-family: 'Staatliches', arial, sans-serif;
     text-align: center;
 }
 
@@ -355,7 +354,15 @@ h4 {
 
 .section_intro a {
     text-decoration: none;
+    background-color: transparent;
+    text-align: center ;
+    color: #ED5464;
+    padding: 0 8px;
+    font-size: 12px;
+    min-height: 24px;
+    margin: 0;
 }
 
-/* ----------------- MESSAGE PAGES -----------------  */
-
+.section_intro a:hover {
+    color: #20232A;
+}
