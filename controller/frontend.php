@@ -26,14 +26,8 @@ class FrontendCtrl {
 
     public function addComment($postId, $author, $comment)
     {
-        $newComment = $this->commentManager->postComment($postId, $author, $comment);
-
-        if ($newComment === false) {
-            throw new Exception('Impossible d\'ajouter le commentaire !');
-        }
-        else {
-            header('Location: index.php?action=post&id=' . $postId);
-        }
+        $this->commentManager->postComment($postId, $author, $comment);
+        header('Location: index.php?action=post&id=' . $postId);
     }
 
     public function addPost($content)

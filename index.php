@@ -6,110 +6,86 @@ try {
     $frontendCtr = new FrontendCtrl();
     $posts = $frontendCtr->listPosts();
 
-    if (isset($_GET['action'])) {
-        if  ($_GET['action'] == 'post') {
+    $action = $_GET['action'];
+    if (isset($action)) {
+        if ($action == 'post') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $postWithComment = $frontendCtr->post();
                 return require('view/frontend/PostView.php');
-            }
-            else {
+            } else {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
-        }
-
-        elseif ($_GET['action'] == 'deletePost') {
-            if (isset($_GET['id']) && $_GET['id'] > 0 && !is_null($_SESSION['login']) ) {
+        } elseif ($action == 'deletePost') {
+            if (isset($_GET['id']) && $_GET['id'] > 0 && !is_null($_SESSION['login'])) {
                 $frontendCtr->deletePost($_GET['id']);
                 return require('view/frontend/deleteView.php');
-            }
-            else {
+            } else {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
-        }
-
-
-        elseif ($_GET['action'] == 'flagComment') {
+        } elseif ($action == 'flagComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $frontendCtr->flagComment($_GET['id']);
-            }
-            else {
+            } else {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
-        }
-
-        elseif ($_GET['action'] == 'unflagComment') {
+        } elseif ($action == 'unflagComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $frontendCtr->unflagComment($_GET['id']);
-            }
-            else {
+            } else {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
-        }
-
-        elseif ($_GET['action'] == 'deleteComment') {
+        } elseif ($action == 'deleteComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $frontendCtr->deleteComment($_GET['id']);
                 return require('view/frontend/deleteCommentView.php');
-            }
-            else {
+            } else {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
-        }
-
-        elseif ($_GET['action'] == 'getPostEdition') {
+        } elseif ($action == 'getPostEdition') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $postEdition = $frontendCtr->getPostEdition();
                 return require('view/frontend/editionView.php');
-            }
-            else {
+            } else {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
-        }
-
-        elseif ($_GET['action'] == 'logout') {
+        } elseif ($action == 'logout') {
             if (isset($_SESSION['login'])) {
                 unset($_SESSION["id"]);
                 unset($_SESSION["login"]);
                 unset($_SESSION["password"]);
                 return require('view/frontend/listPostsView.php');
-            }
-            else {
+            } else {
                 $phrase = "Désolé, nous n'avons trouvé aucune session administrateur en cours.";
                 return require('view/frontend/errorLogin.php');
             }
-        }
-
-        elseif ($_GET['action'] == 'goAdmin') {
+        } elseif ($action == 'goAdmin') {
             if (isset($_SESSION['login'])) {
                 return require('view/frontend/adminView.php');
-            }
-            else {
+            } else {
                 $phrase = "Désolé, nous n'avons trouvé aucune session administrateur en cours.";
                 return require('view/frontend/errorLogin.php');
             }
         }
     }
 
+    $id = $_POST['id'];
     if(isset($_POST['addComment'])){
-        if (isset($_POST['id']) && $_POST['id'] > 0) {
+        if (isset($id) && $id > 0) {
             if (!empty($_POST['author']) && !empty($_POST['comment'])) {
-                $frontendCtr->addComment($_POST['id'], $_POST['author'], $_POST['comment']);
-            }
-            else {
+                $frontendCtr->addComment($id, $_POST['author'], $_POST['comment']);
+            } else {
                 throw new Exception('Tous les champs ne sont pas remplis !');
             }
-        }
-        else {
+        } else {
             throw new Exception('Aucun identifiant de billet envoyé');
         }
     }
 
-    if(isset($_POST['editPost'])){
-        if (isset($_POST['id']) && $_POST['id'] > 0) {
-            $frontendCtr->editPost($_POST['id'], $_POST['content']);
+    if(isset($_POST['editPost'])) {
+        if (isset($id) && $id > 0) {
+            $frontendCtr->editPost($id, $_POST['content']);
             return require('view/frontend/successView.php');
-        }
-        else {
+        } else {
             throw new Exception('Aucun identifiant de billet envoyé');
         }
     }
