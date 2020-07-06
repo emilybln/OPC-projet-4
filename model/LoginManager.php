@@ -7,7 +7,6 @@ class LoginManager
         $req = $db->prepare('SELECT id, password, login FROM members WHERE login = ?');
         $req->execute(array($login));
         $result = $req->fetch();
-
         return $result;
     }
 
