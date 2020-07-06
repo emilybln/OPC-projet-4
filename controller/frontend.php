@@ -2,19 +2,24 @@
 
 class FrontendCtrl {
 
+    private $postManager;
+
+    public function __construct()
+    {
+        $this->postManager = new PostManager();
+    }
+
     public function listPosts()
     {
-        $postManager = new PostManager();
-        return $postManager->getPosts();
+        return $this->postManager->getPosts();
     }
 
     public function post()
     {
-        $postManager = new PostManager();
         $commentManager = new CommentManager();
         $postWithComments = new Post();
 
-        $postWithComments->setPost($postManager->getPost($_GET['id']));
+        $postWithComments->setPost($this->postManager->getPost($_GET['id']));
         $postWithComments->setComments($commentManager->getComments($_GET['id']));
         return  $postWithComments;
     }
@@ -34,20 +39,17 @@ class FrontendCtrl {
 
     public function addPost($content)
     {
-        $postManager = new PostManager();
-       return $postManager->addPost($content);
+       return $this->postManager->addPost($content);
     }
 
     public function deletePost($id)
     {
-        $postManager = new PostManager();
-        return $postManager->deletePost($id);
+        return $this->postManager->deletePost($id);
     }
 
     public function editPost($id, $content)
     {
-        $postManager = new PostManager();
-        return $postManager->editPost($id, $content);
+        return $this->postManager->editPost($id, $content);
     }
 
     public function flagComment($id)
