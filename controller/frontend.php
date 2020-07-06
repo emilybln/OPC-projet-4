@@ -3,10 +3,12 @@
 class FrontendCtrl {
 
     private $postManager;
+    private $commentManager;
 
     public function __construct()
     {
         $this->postManager = new PostManager();
+        $this->commentManager = new CommentManager();
     }
 
     public function listPosts()
@@ -16,18 +18,15 @@ class FrontendCtrl {
 
     public function post()
     {
-        $commentManager = new CommentManager();
         $postWithComments = new Post();
-
         $postWithComments->setPost($this->postManager->getPost($_GET['id']));
-        $postWithComments->setComments($commentManager->getComments($_GET['id']));
+        $postWithComments->setComments($this->commentManager->getComments($_GET['id']));
         return  $postWithComments;
     }
 
     public function addComment($postId, $author, $comment)
     {
-        $commentManager = new CommentManager();
-        $newComment = $commentManager->postComment($postId, $author, $comment);
+        $newComment = $this->commentManager->postComment($postId, $author, $comment);
 
         if ($newComment === false) {
             throw new Exception('Impossible d\'ajouter le commentaire !');
@@ -54,34 +53,29 @@ class FrontendCtrl {
 
     public function flagComment($id)
     {
-        $commentManager = new CommentManager();
-        $commentManager->flagComment($id);
+        $this->commentManager->flagComment($id);
     }
 
     public function unflagComment($id)
     {
-        $commentManager = new CommentManager();
-        $commentManager->unflagComment($id);
+        $this->commentManager->unflagComment($id);
     }
 
     public function listFlagComments()
     {
-        $commentManager = new CommentManager();
-        return $commentManager->getFlagComments();
+        return $this->commentManager->getFlagComments();
     }
 
     public function deleteComment($id)
     {
-        $commentManager = new CommentManager();
-        return $commentManager->deleteComment($id);
+        return $this->commentManager->deleteComment($id);
     }
 
     public function getPostEdition()
     {
-        $postManager = new PostManager();
         $postEdition = new Post();
 
-        $postEdition->setPost($postManager->getPost($_GET['id']));
+        $postEdition->setPost($this->postManager->getPost($_GET['id']));
         return $postEdition;
     }
 
