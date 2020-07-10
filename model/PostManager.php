@@ -1,4 +1,5 @@
 <?php
+
 class PostManager
 {
     public function getPosts()

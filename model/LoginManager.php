@@ -1,4 +1,5 @@
 <?php
+
 class LoginManager
 {
     public function getLogin($login)

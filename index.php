@@ -6,87 +6,111 @@ try {
     $frontendCtr = new FrontendCtrl();
     $posts = $frontendCtr->listPosts();
 
-    $action = $_GET['action'];
-    if (isset($action)) {
-        if ($action == 'post') {
+    if (isset($_GET['action'])) {
+        if  ($_GET['action'] == 'post') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $postWithComment = $frontendCtr->post();
                 return require('view/frontend/PostView.php');
-            } else {
-                throw new Exception('Aucun identifiant de billet envoyé');
             }
-        } elseif ($action == 'deletePost') {
-            if (isset($_GET['id']) && $_GET['id'] > 0 && !is_null($_SESSION['login'])) {
+            else {
+                throw new Exception('Impossible d\'afficher l\'épisode, aucun identifiant de billet trouvé');
+            }
+        }
+
+        elseif ($_GET['action'] == 'deletePost') {
+            if (isset($_GET['id']) && $_GET['id'] > 0 && !is_null($_SESSION['login']) ) {
                 $frontendCtr->deletePost($_GET['id']);
                 return require('view/frontend/deleteView.php');
-            } else {
-                throw new Exception('Aucun identifiant de billet envoyé');
             }
-        } elseif ($action == 'flagComment') {
+            else {
+                throw new Exception('Impossible de supprimer l\'épisode, aucun identifiant de billet trouvé');
+            }
+        }
+
+
+        elseif ($_GET['action'] == 'flagComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $frontendCtr->flagComment($_GET['id']);
-            } else {
-                throw new Exception('Aucun identifiant de billet envoyé');
             }
-        } elseif ($action == 'unflagComment') {
+            else {
+                throw new Exception('Impossible de signaler le commentaire, aucun identifiant de billet trouvé');
+            }
+        }
+
+        elseif ($_GET['action'] == 'unflagComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $frontendCtr->unflagComment($_GET['id']);
-            } else {
-                throw new Exception('Aucun identifiant de billet envoyé');
             }
-        } elseif ($action == 'deleteComment') {
+            else {
+                throw new Exception('Impossible d\'approuver le commentaire, aucun identifiant de billet trouvé');
+            }
+        }
+
+        elseif ($_GET['action'] == 'deleteComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $frontendCtr->deleteComment($_GET['id']);
                 return require('view/frontend/deleteCommentView.php');
-            } else {
-                throw new Exception('Aucun identifiant de billet envoyé');
             }
-        } elseif ($action == 'getPostEdition') {
+            else {
+                throw new Exception('Impossible de supprimer le commentaire, aucun identifiant de billet trouvé');
+            }
+        }
+
+        elseif ($_GET['action'] == 'getPostEdition') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $postEdition = $frontendCtr->getPostEdition();
                 return require('view/frontend/editionView.php');
-            } else {
-                throw new Exception('Aucun identifiant de billet envoyé');
             }
-        } elseif ($action == 'logout') {
+            else {
+                throw new Exception('Aucun identifiant de billet trouvé');
+            }
+        }
+
+        elseif ($_GET['action'] == 'logout') {
             if (isset($_SESSION['login'])) {
                 unset($_SESSION["id"]);
                 unset($_SESSION["login"]);
                 unset($_SESSION["password"]);
                 return require('view/frontend/listPostsView.php');
-            } else {
+            }
+            else {
                 $phrase = "Désolé, nous n'avons trouvé aucune session administrateur en cours.";
                 return require('view/frontend/errorLogin.php');
             }
-        } elseif ($action == 'goAdmin') {
+        }
+
+        elseif ($_GET['action'] == 'goAdmin') {
             if (isset($_SESSION['login'])) {
                 return require('view/frontend/adminView.php');
-            } else {
+            }
+            else {
                 $phrase = "Désolé, nous n'avons trouvé aucune session administrateur en cours.";
                 return require('view/frontend/errorLogin.php');
             }
         }
     }
 
-    $id = $_POST['id'];
     if(isset($_POST['addComment'])){
-        if (isset($id) && $id > 0) {
+        if (isset($_POST['id']) && $_POST['id'] > 0) {
             if (!empty($_POST['author']) && !empty($_POST['comment'])) {
-                $frontendCtr->addComment($id, $_POST['author'], $_POST['comment']);
-            } else {
+                $frontendCtr->addComment($_POST['id'], $_POST['author'], $_POST['comment']);
+            }
+            else {
                 throw new Exception('Tous les champs ne sont pas remplis !');
             }
-        } else {
-            throw new Exception('Aucun identifiant de billet envoyé');
+        }
+        else {
+            throw new Exception('Aucun identifiant de billet trouvé');
         }
     }
 
-    if(isset($_POST['editPost'])) {
-        if (isset($id) && $id > 0) {
-            $frontendCtr->editPost($id, $_POST['content']);
+    if(isset($_POST['editPost'])){
+        if (isset($_POST['id']) && $_POST['id'] > 0) {
+            $frontendCtr->editPost($_POST['id'], $_POST['content']);
             return require('view/frontend/successView.php');
-        } else {
-            throw new Exception('Aucun identifiant de billet envoyé');
+        }
+        else {
+            throw new Exception('Impossible de modifier, l\'épisode, aucun identifiant de billet trouvé');
         }
     }
 

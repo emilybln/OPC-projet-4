@@ -1,4 +1,5 @@
 <?php
+
 class CommentManager
 {
     public function getComments($postId)
